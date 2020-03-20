@@ -7,11 +7,16 @@
         <artifactId>spring-cloud-alibaba-demo</artifactId>
         <version>1.0.0</version>
     </parent>
-    <artifactId>shaylee-api</artifactId>
+    <artifactId>shaylee-gateway</artifactId>
     <version>1.0.0</version>
-    <name>shaylee-api</name>
+    <name>shaylee-gateway</name>
 
     <dependencies>
+        <!--gateway 网关依赖,内置webflux 依赖-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
+        </dependency>
         <!--注册中心客户端-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

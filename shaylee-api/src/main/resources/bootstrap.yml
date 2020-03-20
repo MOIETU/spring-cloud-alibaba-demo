@@ -1,0 +1,29 @@
+server:
+  port: 6091
+  undertow:
+    url-charset: UTF-8
+    io-threads: 16
+    worker-threads: 100
+    buffer-size: 1024
+    direct-buffers: true
+
+logging:
+  level:
+    com.alibaba.nacos.client.naming: error
+    org.springframework.cloud.gateway: debug
+
+spring:
+  application:
+    name: shaylee-gateway
+  devtools:
+    restart:
+      enabled: true
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yml
+      discovery:
+        server-addr: 127.0.0.1:8848
