@@ -1,11 +1,13 @@
 server:
-  port: 6091
+  port: 18080
   undertow:
     url-charset: UTF-8
     io-threads: 16
     worker-threads: 100
     buffer-size: 1024
     direct-buffers: true
+  servlet:
+    context-path: /api
 
 logging:
   level:
@@ -14,7 +16,7 @@ logging:
 
 spring:
   application:
-    name: shaylee-gateway
+    name: shaylee-api
   devtools:
     restart:
       enabled: true
@@ -23,7 +25,7 @@ spring:
   cloud:
     nacos:
       config:
-        server-addr: 127.0.0.1:8848
+        server-addr: 119.23.184.173:8848
         file-extension: yml
       discovery:
-        server-addr: 127.0.0.1:8848
+        server-addr: 119.23.184.173:8848

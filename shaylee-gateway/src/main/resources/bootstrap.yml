@@ -1,5 +1,5 @@
 server:
-  port: 9527
+  port: 18083
 
 logging:
   level:
@@ -15,43 +15,26 @@ spring:
   profiles:
     active: dev
   cloud:
+    # 注册中心
     nacos:
       config:
-        server-addr: 127.0.0.1:8848
+        server-addr: 119.23.184.173:8848
         file-extension: yml
       discovery:
-        server-addr: 127.0.0.1:8848
+        server-addr: 119.23.184.173:8848
+    # 限流熔断
+    sentinel:
+      transport:
+        dashboard: 119.23.184.173:8849
+      scg:
+        fallback:
+          mode: response
+          response-status: 426
+          response-body: error request
+    # 网关
     gateway:
-      discovery:
-        locator:
-          lowerCaseServiceId: true
-          enabled: true
       routes:
-        # 认证中心
-        - id: ruoyi-auth
-          uri: lb://ruoyi-auth
-          predicates:
-            - Path=/auth/**
-          filters:
-            # 验证码处理
-            - CacheRequest
-            - ImgCodeFilter
-            - StripPrefix=1
-        #api 模块
         - id: shaylee-api
           uri: lb://shaylee-api
           predicates:
             - Path=/api/**
-          filters:
-            - StripPrefix=1
-            # 限流配置
-            - name: RequestRateLimiter
-              args:
-                key-resolver: '#{@remoteAddrKeyResolver}'
-                redis-rate-limiter.replenishRate: 10
-                redis-rate-limiter.burstCapacity: 20
-              # 降级配置
-            - name: Hystrix
-              args:
-                name: fallbackcmd
-                fallbackUri: 'forward:/fallback'
