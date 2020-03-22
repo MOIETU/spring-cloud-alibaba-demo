@@ -25,7 +25,8 @@ spring:
     # 限流熔断
     sentinel:
       transport:
-        dashboard: 119.23.184.173:8849
+        dashboard: 127.0.0.1:8849
+#        dashboard: 119.23.184.173:8849
       scg:
         fallback:
           mode: response
@@ -34,6 +35,10 @@ spring:
     # 网关
     gateway:
       routes:
+        - id: shaylee-api-oss
+          uri: lb://shaylee-api-oss
+          predicates:
+            - Path=/api/oss/**
         - id: shaylee-api
           uri: lb://shaylee-api
           predicates:

@@ -1,5 +1,6 @@
-package com.shaylee.api.controller;
+package com.shaylee.apioss.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,11 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2020-03-20
  */
 @RestController
-@RequestMapping("/demo")
-public class DemoController {
+@RequestMapping("/oss")
+public class OssController {
+
+    @Value("${server.port}")
+    private Integer port;
 
     @RequestMapping("/whoami")
     public Object whoami() {
-        return "shaylee-api";
+        return "shaylee-api-oss:" + port;
     }
 }

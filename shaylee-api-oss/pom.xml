@@ -7,26 +7,11 @@
         <artifactId>spring-cloud-alibaba-demo</artifactId>
         <version>1.0.0</version>
     </parent>
-    <artifactId>shaylee-gateway</artifactId>
+    <artifactId>shaylee-api-oss</artifactId>
     <version>1.0.0</version>
-    <name>shaylee-gateway</name>
+    <name>shaylee-api</name>
 
     <dependencies>
-        <!--gateway 网关依赖,内置webflux 依赖-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-gateway</artifactId>
-        </dependency>
-        <!--sentinel监控-->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
-        </dependency>
-        <!--sentinel网关整合-->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-alibaba-sentinel-gateway</artifactId>
-        </dependency>
         <!--注册中心客户端-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
@@ -37,11 +22,10 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
-
+        <!-- SpringBoot Web容器 -->
         <dependency>
-            <groupId>com.shaylee</groupId>
-            <artifactId>shaylee-common</artifactId>
-            <version>1.0.0</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
     </dependencies>
 
