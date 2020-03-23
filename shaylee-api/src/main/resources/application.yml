@@ -1,0 +1,38 @@
+server:
+  port: 18080
+  undertow:
+    url-charset: UTF-8
+    io-threads: 16
+    worker-threads: 100
+    buffer-size: 1024
+    direct-buffers: true
+  servlet:
+    context-path: /api
+
+logging:
+  level:
+    com.alibaba.nacos.client.naming: error
+    org.springframework.cloud.gateway: debug
+
+spring:
+  profiles:
+    active: dev
+
+# mybatis原生配置
+mybatis:
+  # 搜索指定包别名
+  typeAliasesPackage: com.shaylee.**.mapper
+  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+  mapperLocations: classpath*:/mapper/**/*.xml
+
+# mybatis增强配置
+mapper:
+  not-empty: true
+  identity: MYSQL
+
+# PageHelper分页插件
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql

@@ -1,10 +1,11 @@
 package com.shaylee.common.gateway.support;
 
+import com.shaylee.common.gateway.constant.CacheConstants;
 import com.shaylee.common.redis.service.CacheService;
 import com.shaylee.common.utils.SpringContextHolder;
-import com.shaylee.common.gateway.constant.CacheConstants;
-import com.shaylee.common.gateway.vo.RouteDefinitionVO;
+import org.springframework.cloud.gateway.route.RouteDefinition;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -27,8 +28,8 @@ public class RouteCacheHolder {
 	 *
 	 * @return routeList
 	 */
-	public static List<RouteDefinitionVO> getRouteList() {
-		List<RouteDefinitionVO> routeList = (List<RouteDefinitionVO>) cacheService.get(CacheConstants.ROUTE_LIST_KEY);
+	public static List<RouteDefinition> getRouteList() {
+		List<RouteDefinition> routeList = (List<RouteDefinition>) cacheService.get(CacheConstants.ROUTE_LIST_KEY);
 		return routeList;
 	}
 
@@ -37,7 +38,7 @@ public class RouteCacheHolder {
 	 *
 	 * @param routeList 缓存列表
 	 */
-	public static void setRouteList(List<RouteDefinitionVO> routeList) {
+	public static void setRouteList(List<RouteDefinition> routeList) {
 		cacheService.set(CacheConstants.ROUTE_LIST_KEY, routeList);
 	}
 

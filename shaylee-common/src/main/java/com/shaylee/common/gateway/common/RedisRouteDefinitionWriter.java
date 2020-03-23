@@ -1,7 +1,6 @@
 package com.shaylee.common.gateway.common;
 
 import com.shaylee.common.gateway.constant.CacheConstants;
-import com.shaylee.common.gateway.vo.RouteDefinitionVO;
 import com.shaylee.common.redis.service.CacheService;
 import com.shaylee.common.gateway.support.RouteCacheHolder;
 import org.apache.commons.collections.CollectionUtils;
@@ -26,7 +25,7 @@ import java.util.stream.Collectors;
  * @author Adrian
  * @date 2020-03-22
  */
-@Component
+//@Component
 public class RedisRouteDefinitionWriter implements RouteDefinitionRepository {
 	private static Logger logger = LoggerFactory.getLogger(RedisRouteDefinitionWriter.class);
 	@Autowired
@@ -35,10 +34,8 @@ public class RedisRouteDefinitionWriter implements RouteDefinitionRepository {
 	@Override
 	public Mono<Void> save(Mono<RouteDefinition> route) {
 		return route.flatMap(r -> {
-			RouteDefinitionVO vo = new RouteDefinitionVO();
-			BeanUtils.copyProperties(r, vo);
-			logger.info("保存路由信息{}", vo);
-			cacheService.hSet(CacheConstants.ROUTE_KEY, r.getId(), vo);
+			logger.info("保存路由信息{}", r);
+			cacheService.hSet(CacheConstants.ROUTE_KEY, r.getId(), r);
 			RouteCacheHolder.removeRouteList();
 			return Mono.empty();
 		});
@@ -65,15 +62,15 @@ public class RedisRouteDefinitionWriter implements RouteDefinitionRepository {
 	 */
 	@Override
 	public Flux<RouteDefinition> getRouteDefinitions() {
-		List<RouteDefinitionVO> routeList = RouteCacheHolder.getRouteList();
+		List<RouteDefinition> routeList = RouteCacheHolder.getRouteList();
 		if (CollectionUtils.isNotEmpty(routeList)) {
 			logger.debug("内存 中路由定义条数： {}， {}", routeList.size(), routeList);
 			return Flux.fromIterable(routeList);
 		}
 
 		Map<String, Object> map = cacheService.hGetAll(CacheConstants.ROUTE_KEY);
-		List<RouteDefinitionVO> values = map.values().stream()
-				.map(entity -> (RouteDefinitionVO)entity)
+		List<RouteDefinition> values = map.values().stream()
+				.map(entity -> (RouteDefinition)entity)
 				.collect(Collectors.toList());
 
 		logger.debug("redis 中路由定义条数： {}， {}", values.size(), values);

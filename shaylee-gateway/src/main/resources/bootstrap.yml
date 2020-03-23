@@ -1,31 +1,18 @@
-server:
-  port: 18083
-
-logging:
-  level:
-    com.alibaba.nacos.client.naming: error
-    org.springframework.cloud.gateway: debug
-
 spring:
   application:
     name: shaylee-gateway
-  devtools:
-    restart:
-      enabled: true
-  profiles:
-    active: dev
   cloud:
     # 注册中心
     nacos:
       config:
-        server-addr: 119.23.184.173:8848
+        server-addr: 192.168.0.224:18848
         file-extension: yml
       discovery:
-        server-addr: 119.23.184.173:8848
+        server-addr: 192.168.0.224:18848
     # 限流熔断
     sentinel:
       transport:
-        dashboard: 127.0.0.1:8849
+        dashboard: 192.168.0.224:18849
 #        dashboard: 119.23.184.173:8849
       scg:
         fallback:

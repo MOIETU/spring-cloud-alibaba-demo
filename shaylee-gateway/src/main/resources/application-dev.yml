@@ -1,0 +1,42 @@
+# 数据源配置
+spring:
+  shardingsphere:
+    datasource:
+      names: master,slave0
+      master:
+        # 数据源 主库
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://192.168.0.80:3306/zetar?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+        username: dev
+        password: 123@wp.com
+      slave0:
+        # 数据源 从库0
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://192.168.0.80:3306/zetar?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+        username: dev
+        password: 123@wp.com
+    sharding:
+      master-slave-rules:
+        ds0:
+          master-data-source-name: master
+          slave-data-source-names: slave0
+    props:
+      sql.show: false
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password:
+    timeout: 6000ms
+    lettuce:
+      pool:
+        # 最大空闲数
+        max-idle: 300
+        # 最小空闲数
+        min-idle: 5
+        # 连接池的最大数据库连接数。设为0表示无限制
+        max-active: 1000
+        # 最大建立连接等待时间。如果超过此时间将接到异常。设为-1表示无限制。
+        max-wait: 20000ms

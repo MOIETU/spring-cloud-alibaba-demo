@@ -1,31 +1,15 @@
-server:
-  port: 18080
-  undertow:
-    url-charset: UTF-8
-    io-threads: 16
-    worker-threads: 100
-    buffer-size: 1024
-    direct-buffers: true
-  servlet:
-    context-path: /api
-
-logging:
-  level:
-    com.alibaba.nacos.client.naming: error
-    org.springframework.cloud.gateway: debug
-
 spring:
   application:
     name: shaylee-api
-  devtools:
-    restart:
-      enabled: true
-  profiles:
-    active: dev
   cloud:
     nacos:
       config:
-        server-addr: 119.23.184.173:8848
+        server-addr: 192.168.0.224:18848
         file-extension: yml
       discovery:
-        server-addr: 119.23.184.173:8848
+        server-addr: 192.168.0.224:18848
+    # 限流熔断
+    sentinel:
+      transport:
+        dashboard: 192.168.0.224:18849
+      #        dashboard: 119.23.184.173:8849
