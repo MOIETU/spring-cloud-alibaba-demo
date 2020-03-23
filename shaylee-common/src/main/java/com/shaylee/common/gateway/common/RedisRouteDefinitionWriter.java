@@ -1,9 +1,9 @@
-package com.shaylee.common.gateway.constant;
+package com.shaylee.common.gateway.common;
 
-import com.shaylee.common.gateway.common.CacheConstants;
+import com.shaylee.common.gateway.constant.CacheConstants;
+import com.shaylee.common.gateway.vo.RouteDefinitionVO;
 import com.shaylee.common.redis.service.CacheService;
 import com.shaylee.common.gateway.support.RouteCacheHolder;
-import com.shaylee.common.gateway.vo.RouteDefinitionVO;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

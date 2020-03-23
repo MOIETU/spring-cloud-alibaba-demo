@@ -1,4 +1,4 @@
-package com.shaylee.common.gateway.common;
+package com.shaylee.common.gateway.constant;
 
 /**
  * Title: 缓存的key 常量

@@ -1,6 +1,6 @@
 package com.shaylee.common.gateway.configuration;
 
-import com.shaylee.common.gateway.common.CacheConstants;
+import com.shaylee.common.gateway.constant.CacheConstants;
 import com.shaylee.common.gateway.support.RouteCacheHolder;
 import io.lettuce.core.ReadFrom;
 import io.lettuce.core.cluster.ClusterClientOptions;

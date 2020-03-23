@@ -2,7 +2,7 @@ package com.shaylee.common.gateway.support;
 
 import com.shaylee.common.redis.service.CacheService;
 import com.shaylee.common.utils.SpringContextHolder;
-import com.shaylee.common.gateway.common.CacheConstants;
+import com.shaylee.common.gateway.constant.CacheConstants;
 import com.shaylee.common.gateway.vo.RouteDefinitionVO;
 
 import java.util.List;
