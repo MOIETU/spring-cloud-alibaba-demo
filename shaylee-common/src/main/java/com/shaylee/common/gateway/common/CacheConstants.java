@@ -1,4 +1,4 @@
-package com.shaylee.gateway.constant;
+package com.shaylee.common.gateway.common;
 
 /**
  * Title: 缓存的key 常量
@@ -14,6 +14,8 @@ public interface CacheConstants {
 	String ROUTE_KEY = "gateway_route_key";
 
 	String ROUTE_HASH_KEY = "gateway_route_hash_key";
+
+	String ROUTE_LIST_KEY = "gateway_route_keys";
 
 	/**
 	 * redis reload 事件

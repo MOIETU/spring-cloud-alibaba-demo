@@ -1,13 +1,11 @@
-package com.shaylee.gateway.support;
+package com.shaylee.common.gateway.support;
 
 import com.shaylee.common.redis.service.CacheService;
 import com.shaylee.common.utils.SpringContextHolder;
-import com.shaylee.gateway.constant.CacheConstants;
-import com.shaylee.gateway.vo.RouteDefinitionVO;
+import com.shaylee.common.gateway.common.CacheConstants;
+import com.shaylee.common.gateway.vo.RouteDefinitionVO;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Title: 路由缓存工具类
@@ -30,9 +28,7 @@ public class RouteCacheHolder {
 	 * @return routeList
 	 */
 	public static List<RouteDefinitionVO> getRouteList() {
-		List<RouteDefinitionVO> routeList = new ArrayList<>();
-		Map<String, Object> cacheMap = cacheService.hGetAll(CacheConstants.ROUTE_HASH_KEY);
-		cacheMap.forEach((key, value) -> routeList.add((RouteDefinitionVO) value));
+		List<RouteDefinitionVO> routeList = (List<RouteDefinitionVO>) cacheService.get(CacheConstants.ROUTE_LIST_KEY);
 		return routeList;
 	}
 
@@ -42,14 +38,14 @@ public class RouteCacheHolder {
 	 * @param routeList 缓存列表
 	 */
 	public static void setRouteList(List<RouteDefinitionVO> routeList) {
-		routeList.forEach(route -> cacheService.hSet(CacheConstants.ROUTE_HASH_KEY, route.getId(), route));
+		cacheService.set(CacheConstants.ROUTE_LIST_KEY, routeList);
 	}
 
 	/**
 	 * 清空缓存
 	 */
 	public static void removeRouteList() {
-		cacheService.delete(CacheConstants.ROUTE_HASH_KEY);
+		cacheService.delete(CacheConstants.ROUTE_LIST_KEY);
 	}
 
 }

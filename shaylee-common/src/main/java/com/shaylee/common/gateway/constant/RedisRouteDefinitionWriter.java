@@ -1,8 +1,9 @@
-package com.shaylee.gateway.common;
+package com.shaylee.common.gateway.constant;
 
-import com.shaylee.gateway.constant.CacheConstants;
-import com.shaylee.gateway.support.RouteCacheHolder;
-import com.shaylee.gateway.vo.RouteDefinitionVO;
+import com.shaylee.common.gateway.common.CacheConstants;
+import com.shaylee.common.redis.service.CacheService;
+import com.shaylee.common.gateway.support.RouteCacheHolder;
+import com.shaylee.common.gateway.vo.RouteDefinitionVO;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,14 +11,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionRepository;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Title: redis 保存路由信息，优先级比配置文件高
@@ -28,11 +28,9 @@ import java.util.List;
  */
 @Component
 public class RedisRouteDefinitionWriter implements RouteDefinitionRepository {
-
 	private static Logger logger = LoggerFactory.getLogger(RedisRouteDefinitionWriter.class);
-
 	@Autowired
-	private RedisTemplate redisTemplate;
+	private CacheService cacheService;
 
 	@Override
 	public Mono<Void> save(Mono<RouteDefinition> route) {
@@ -40,9 +38,8 @@ public class RedisRouteDefinitionWriter implements RouteDefinitionRepository {
 			RouteDefinitionVO vo = new RouteDefinitionVO();
 			BeanUtils.copyProperties(r, vo);
 			logger.info("保存路由信息{}", vo);
-			redisTemplate.setKeySerializer(new StringRedisSerializer());
-			redisTemplate.opsForHash().put(CacheConstants.ROUTE_KEY, r.getId(), vo);
-			redisTemplate.convertAndSend(CacheConstants.ROUTE_JVM_RELOAD_TOPIC, "新增路由信息,网关缓存更新");
+			cacheService.hSet(CacheConstants.ROUTE_KEY, r.getId(), vo);
+			RouteCacheHolder.removeRouteList();
 			return Mono.empty();
 		});
 	}
@@ -51,13 +48,11 @@ public class RedisRouteDefinitionWriter implements RouteDefinitionRepository {
 	public Mono<Void> delete(Mono<String> routeId) {
 		routeId.subscribe(id -> {
 			logger.info("删除路由信息{}", id);
-			redisTemplate.setKeySerializer(new StringRedisSerializer());
-			redisTemplate.opsForHash().delete(CacheConstants.ROUTE_KEY, id);
+			cacheService.hDel(CacheConstants.ROUTE_KEY, id);
 		});
-		redisTemplate.convertAndSend(CacheConstants.ROUTE_JVM_RELOAD_TOPIC, "删除路由信息,网关缓存更新");
+		RouteCacheHolder.removeRouteList();
 		return Mono.empty();
 	}
-
 
 	/**
 	 * 动态路由入口
@@ -76,9 +71,11 @@ public class RedisRouteDefinitionWriter implements RouteDefinitionRepository {
 			return Flux.fromIterable(routeList);
 		}
 
-		redisTemplate.setKeySerializer(new StringRedisSerializer());
-		redisTemplate.setHashValueSerializer(new Jackson2JsonRedisSerializer<>(RouteDefinitionVO.class));
-		List<RouteDefinitionVO> values = redisTemplate.opsForHash().values(CacheConstants.ROUTE_KEY);
+		Map<String, Object> map = cacheService.hGetAll(CacheConstants.ROUTE_KEY);
+		List<RouteDefinitionVO> values = map.values().stream()
+				.map(entity -> (RouteDefinitionVO)entity)
+				.collect(Collectors.toList());
+
 		logger.debug("redis 中路由定义条数： {}， {}", values.size(), values);
 
 		RouteCacheHolder.setRouteList(values);

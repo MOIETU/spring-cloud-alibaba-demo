@@ -1,4 +1,4 @@
-package com.shaylee.gateway.vo;
+package com.shaylee.common.gateway.vo;
 
 import org.springframework.cloud.gateway.route.RouteDefinition;
 
